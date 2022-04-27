@@ -2,32 +2,30 @@ CREATE TABLE Students(id int, name text, Gpa real)
 CREATE TABLE Courses(id int, name text)
 CREATE TABLE Enrollment(studentId int, courseId int)
 
-//I need to add constraints about fields that shouldn't be null
-//ALTER COLUMN Students(id) IS NOT NULL
 
 ALTER TABLE Students ADD PRIMARY KEY(id)
 
 ALTER TABLE Enrollment ADD PRIMARY KEY(studentId, courseId)
-ALTER TABLE Enrollment ADD CONSTRAINT FOREING KEY(FK_Enrollment_Student_id)
+pLTER TABLE Enrollment ADD CONSTRAINT FOREING KEY(FK_Enrollment_Student_id)
 ALTER TABLE Enrollment ADD CONSTRAINT FOREING KEY(FK_Enrollment_Courses_id)
 REFERENCES Students(id)
 
 ALTER TABLE Courses ADD PRIMARY KEY(id)
 
 
-//JOINS
+# JOINS
 1) Simplify with USING 
     SELECT *
     FROM TABLE A
     JOIN TABLE B USING (id)
-2) Use natural join for fields with the same name //But it's not reccomended in
-practical use
+2) Use natural join for fields with the same name (But it's not reccomended in
+practical use)
     SELECT *
     FROM TABLE A
     NATURAL JOIN TABLE B 
 3)
 
-//Group
+# Group
     1) When grouping by you do next
         - First - defining sourses by From clause
         - then filter it by where clause
@@ -44,15 +42,15 @@ practical use
     4) If I like to apply some filtering after grouping I need to use HAVING
     clause.
 
-// Additional clauses
+#  Additional clauses
     1) Except - shows data which is not equal between queries
     2) Intersect - shows data which is equal between queries
     3) union - shows unioned data 
 
-// Correlated and uncorellated subqueries are queries that matching with the
+#  Correlated and uncorellated subqueries are queries that matching with the
 main query by some variables from parent query or not accordingly.
 
-// Table schema
+#  Table schema
     - table schema (constraints info, column names, types) are stored in database
         catalog. Database catalog is persisted in repository of DB where stored
         metadata about all data that are stored.
@@ -83,7 +81,7 @@ main query by some variables from parent query or not accordingly.
         free
         10100 <- map to describe page
 
-//Indexes
+# Indexes
     - index stores references as PageId and SlotId to table row.
     - index group column values, so it looks like key i.e creating indexes it's
       the same as to create keys. (I found it looks similiar to virtual memory
@@ -125,14 +123,14 @@ main query by some variables from parent query or not accordingly.
     - Tree indexes based on sort order which means the similiar indexes are
       close each other. So we can think that probably values the similiar too or
       close each other.
-// Hash indexes
+#  Hash indexes
     - based on hash values. So if the similiar key was found it doesn't mean
       that they have the same values.
     - Hash table stored in memory, like dictionary contains key and value, where
       value is a bite representation of position in file.
     Hash vs btree need to cover in detail soon.
 
-    Buffer manager
+#   Buffer manager
     - works like RAM and virtual memory.
     - it has a bufer pool wich is like RAM. Buffer manager accept requests and
       check bufer. Like Ram manager bufer decides what frames to erase and what
@@ -142,7 +140,7 @@ main query by some variables from parent query or not accordingly.
       have very tight control of security data (guarantee that pages will be
       load or persisted)
 
-    Query processor
+#   Query processor
 
     - Query is parsed and simplified (parser and ReWriter)
      By parsed means translating to tree representation and after that system
@@ -152,7 +150,7 @@ main query by some variables from parent query or not accordingly.
      Then query is executed.
     - Query plans are tree where leafs corresponds to datat sources (tables)
 
-    Query Executer:
+#    Query Executer:
 
     - Each standard operator (projection, join...) has multiple implementations
       which executer selects.
@@ -161,7 +159,7 @@ main query by some variables from parent query or not accordingly.
       BUT sometimes optimizer selects wrong plan so there is a need to do it by
       our selves.
 
-    SUMMARY ABOUT COST CALCULATIONS:
+##    SUMMARY ABOUT COST CALCULATIONS:
     Scan - expensive because it need chech every page;
     BTree - much better because it scans nodes of indexes and then read entries;
     BTree index with datat -> the fastest because there no need to read
@@ -169,7 +167,7 @@ main query by some variables from parent query or not accordingly.
     Unclustered index -> could be more expensive because it need to check nodes
     and then read records from hard disk.
 
-    An example
+##    An example
     -if we do select like SELECT count(*) from sometable where somecolumn =/</>
     'something' (somecolumn has Unclustered index) then optimizer will use
     index scan because we don't need data at the end, just count where system
@@ -181,7 +179,7 @@ main query by some variables from parent query or not accordingly.
     be retrieved. Probably in some cases is cheaper to use index when we going
     to get a small amount of rows.
 
-    TIPS:
+##    TIPS:
     Idex or sort orders can speed up filtering;
     Sometimes we can improve query with joins by swapping them i.e. if outer
     table contains more rows rather than inener table then it's better to swap
